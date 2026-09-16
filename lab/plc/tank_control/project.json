@@ -19,8 +19,8 @@
         "instances": [
           {
             "name": "instance0",
-            "task": "task0",
-            "program": "main"
+            "program": "main",
+            "task": "task0"
           }
         ],
         "globalVariables": []

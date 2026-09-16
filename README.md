@@ -10,12 +10,12 @@
 | --- | --- | --- |
 | 범위·구성·진단 방법 | 문서 작성 | [`docs/`](docs/) |
 | 가상 탱크 PLC 프로그램·Compose | 저장소에 작성 | [`lab/plc/tank_control/`](lab/plc/tank_control/), [`lab/compose/`](lab/compose/) |
-| Editor 시뮬레이터 실행·Docker Runtime 연결 | 사용자 실행 성공 보고 | 버전·로그·화면 증거는 저장소에 미등록 |
-| Modbus TCP 서버 | 설정 준비, 실행 검증 전 | [`docs/modbus-setup.md`](docs/modbus-setup.md) |
+| Editor 시뮬레이터·Docker Runtime 연결, PLC 업로드 | 사용자 실행 로그로 컴파일·업로드·시작 확인 | Runtime 이미지 digest와 지속 실행 상태는 미확인 |
+| Modbus TCP 서버 | Editor 설정 후 읽기 응답 확인 | [`evidence/baseline/modbus-read-2026-09-17.md`](evidence/baseline/modbus-read-2026-09-17.md) |
 | FUXA 태그·정상 패킷 | 미검증 | Modbus 주소 확정 후 진행 |
 | 보안 평가·개선·재검증 | 미실시 | 정상 기준 확보 후 진행 |
 
-**현재 성과를 취약점 발견이나 조치 성공으로 주장하지 않습니다.** Modbus 서버 설정과 PLC 주소표는 실행 환경에서 확인할 때까지 가설입니다.
+**현재 성과를 취약점 발견이나 조치 성공으로 주장하지 않습니다.** Modbus 주소표의 읽기 응답은 확인했지만, 쓰기·공정 상태 변화와 FUXA 통신은 아직 검증하지 않았습니다.
 
 ## 컨설팅 관점의 평가 질문
 
@@ -41,6 +41,6 @@
 
 ## 다음 완료 기준
 
-Runtime에서 Modbus 플러그인이 시작하고 `openplc:5020`에서 응답하는지 확인합니다. 수위 레지스터와 펌프 관련 코일의 주소·자료형·Function Code를 실제 응답으로 확정하고, 가상 공정 상태 변화까지 기록합니다. 그다음 FUXA 정상 통신을 baseline으로 확보합니다.
+격리된 실습 환경에서 펌프 명령 코일의 쓰기와 공정 상태 변화를 검증합니다. 그다음 FUXA 정상 통신을 baseline으로 확보합니다.
 
 Runtime과 FUXA의 `latest` 태그는 아직 정확한 이미지 digest로 고정하지 않았습니다. 재현 절차와 최종 결과는 실측 버전·증거를 확보한 뒤 갱신합니다.
