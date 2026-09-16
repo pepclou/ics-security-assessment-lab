@@ -35,6 +35,16 @@ services:
     networks:
       - control
 
+  modbus-pump-check:
+    image: python:3.12-alpine
+    profiles:
+      - verify
+    volumes:
+      - ../tools:/tools:ro
+    command: ["python", "/tools/modbus_pump_check.py"]
+    networks:
+      - control
+
 networks:
   control:
 

@@ -1,6 +1,6 @@
 # Modbus TCP server setup and verification
 
-Status: PLC build/upload and read-only Modbus TCP probe succeeded on 2026-09-17. Write behavior and process response are pending.
+Status: PLC build/upload, read-only Modbus TCP probe, and brief pump command write/process response check succeeded on 2026-09-17. Alarm and restart behavior remain unverified.
 
 ## Configuration
 
@@ -34,6 +34,20 @@ docker compose -f lab/compose/compose.yaml run --rm modbus-probe
 
 The probe reads holding register offset 0 with function code 03 and coil offsets 0–2 with function code 01. It prints the returned values as JSON or exits with an error. It does not write a coil or change the PLC state. This one-time verification service runs only when explicitly targeted; it is not started by ordinary `docker compose up`.
 
+To check the pump command and process response in this isolated lab, run the separate one-time service:
+
+```powershell
+docker compose -f lab/compose/compose.yaml run --rm modbus-pump-check
+```
+
+It reads the baseline, skips the test if the pump command is already on or the high-level alarm is active, writes coil 0 on, waits three seconds, reads the tags, and writes coil 0 off in a `finally` block. Its JSON result reports each read and five checks. If the process is interrupted or the JSON reports `reset_error`, explicitly turn the command off and verify it:
+
+```powershell
+docker compose -f lab/compose/compose.yaml run --rm modbus-pump-check python /tools/modbus_pump_check.py --reset
+```
+
+The write test is not started by ordinary `docker compose up`. Run it only in the project-owned lab, not against an external PLC.
+
 ## Tag contract to validate
 
 These are expected mappings from the PLC addresses and the current OpenPLC plugin implementation, not observed results. Record the actual function code, wire offset, client display address, value, and response for each row.
@@ -45,7 +59,7 @@ These are expected mappings from the PLC addresses and the current OpenPLC plugi
 | `pump_running` | `%QX0.1` | Coil | 1 | Read |
 | `high_level_alarm` | `%QX0.2` | Coil | 2 | Read |
 
-The first read of the holding register and three coils succeeded; see `evidence/baseline/modbus-read-2026-09-17.md`. Next write only coil 0 in this isolated lab, read it back, and confirm the PLC logic changes `pump_running` and `tank_level`. Test the high-level alarm and a container restart. A successful Modbus write response alone does not prove the process state changed. Do not assume that a client label such as `40001` equals the wire offset `0`.
+The first read of the holding register and three coils succeeded; see `evidence/baseline/modbus-read-2026-09-17.md`. The pump check confirmed a coil 0 write, `pump_running` becoming true, `tank_level` rising from 0 to 3, and a return to stopped after reset; see `evidence/baseline/modbus-pump-write-2026-09-17.md`. Test the high-level alarm and a container restart separately. A successful Modbus write response alone does not prove the process state changed. Do not assume that a client label such as `40001` equals the wire offset `0`.
 
 If the plugin does not start, check that the Editor project contains the Modbus server and that the upload produced `conf/modbus_slave.json`; inspect Runtime logs. If values are wrong, inspect the PLC execution state and address interpretation before adding the HMI.
 
