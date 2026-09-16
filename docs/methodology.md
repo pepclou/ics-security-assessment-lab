@@ -2,7 +2,7 @@
 
 프로젝트: ICS Security Assessment Lab — Modbus TCP Security Assessment & Remediation
 
-Day 1에는 방법만 정의한다. 아래 항목은 수행 결과가 아니며 모든 기술 검증 상태는 미실시다.
+이 문서는 Day 1에 방법을 정의했다. 이후 Editor 시뮬레이터 실행과 Docker Runtime 연결은 사용자에게서 성공을 확인했으나, 버전·로그·화면 증거는 아직 저장소에 없다. 아래 진단 항목은 수행 결과가 아니다.
 
 ## 진행 흐름
 

@@ -11,7 +11,7 @@ flowchart LR
     Browser[호스트 브라우저] -->|localhost HTTP 1881| HMI[FUXA HMI]
     Editor[호스트 OpenPLC Editor v4] -->|localhost HTTPS 8443| PLC[OpenPLC Runtime v4]
     subgraph LAB[격리된 Docker 실습 네트워크]
-        HMI -->|Modbus TCP 요청 / 목표 502| PLC
+        HMI -->|Modbus TCP 요청 / 현재 설정 5020| PLC
         PLC -->|Modbus 응답| HMI
         PLC --- Process[가상 탱크와 펌프 상태 / PLC 내부 모델]
         Assessor[향후 임시 평가자 역할]
@@ -33,7 +33,7 @@ flowchart LR
 | Wireshark | 저장된 패킷에서 요청과 응답을 해석 | PCAP, 화면, 패킷 번호와 해석 |
 | 평가자 | 후속 진단에서 일반 HMI와 다른 출발점을 표현 | 임시 접근 경로, 허용 대상, 검증 기록 |
 
-OpenPLC의 v4 관리면은 HTTPS 8443이며 예전 v3 방식의 웹 관리 화면이 아니다. Modbus 서버 plugin의 활성화와 주소 mapping은 선택 버전에서 별도로 확인해야 한다. 관리 API가 준비됐다는 사실만으로 Modbus가 준비됐다고 볼 수 없다. [OpenPLC 공식 설명](https://github.com/Autonomy-Logic/openplc-runtime)
+OpenPLC의 v4 관리면은 HTTPS 8443이며 예전 v3 방식의 웹 관리 화면이 아니다. Modbus 서버 plugin 설정은 [modbus-setup.md](modbus-setup.md)에 준비했으며 실제 응답과 주소 mapping은 아직 검증하지 않았다. 관리 API가 준비됐다는 사실만으로 Modbus가 준비됐다고 볼 수 없다. [OpenPLC 공식 설명](https://github.com/Autonomy-Logic/openplc-runtime)
 
 ## 통신과 경계
 
@@ -41,7 +41,7 @@ OpenPLC의 v4 관리면은 HTTPS 8443이며 예전 v3 방식의 웹 관리 화�
 | --- | --- | --- |
 | 호스트 브라우저 → FUXA | 화면·설정 | 호스트 loopback에만 1881 게시 |
 | 호스트 Editor → PLC 관리면 | 프로그램 배포·상태 확인 | 호스트 loopback에만 8443 게시 |
-| FUXA backend → PLC | 주기적 Modbus 조회 및 운전 명령 | 실습 내부 TCP 502 목표, 서비스 이름으로 연결 |
+| FUXA backend → PLC | 주기적 Modbus 조회 및 운전 명령 | 현재 설정은 실습 내부 TCP 5020, 서비스 이름으로 연결. 통신 미검증 |
 | 평가자 → PLC | 향후 통제된 비교 검증 | 외부망에서 진입 불가. 실습 안에서만 조치 전/후 비교 |
 | 외부 LAN/인터넷 → 실습 | 업무상 필요 없음 | 서비스 게시 금지 |
 

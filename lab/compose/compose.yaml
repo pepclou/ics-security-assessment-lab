@@ -10,6 +10,8 @@ services:
       - "127.0.0.1:8443:8443"
     volumes:
       - openplc_data:/var/run/runtime
+      - ./plugins.conf:/workdir/plugins.conf:ro
+      - ./modbus_slave_config.json:/workdir/core/src/drivers/plugins/python/modbus_slave/modbus_slave_config.json:ro
     networks:
       - control
 
