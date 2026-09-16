@@ -24,6 +24,14 @@ docker compose -f lab/compose/compose.yaml images
 
 Confirm that the Runtime loaded `modbus_slave` and listens on port 5020. Deploy and start `tank_control` from the Editor if it is not already running. Check that the PLC program is running before interpreting zero or unchanging Modbus values.
 
+Then run the read-only probe from the same Compose network:
+
+```powershell
+docker compose -f lab/compose/compose.yaml run --rm modbus-probe
+```
+
+The probe reads holding register offset 0 with function code 03 and coil offsets 0–2 with function code 01. It prints the returned values as JSON or exits with an error. It does not write a coil or change the PLC state. This one-time verification service runs only when explicitly targeted; it is not started by ordinary `docker compose up`.
+
 ## Tag contract to validate
 
 These are expected mappings from the PLC addresses and the current OpenPLC plugin implementation, not observed results. Record the actual function code, wire offset, client display address, value, and response for each row.

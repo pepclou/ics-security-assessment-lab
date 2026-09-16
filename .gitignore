@@ -1,2 +1,4 @@
 # OpenPLC Editor-generated compilation artifacts
 lab/plc/**/build/
+__pycache__/
+*.pyc

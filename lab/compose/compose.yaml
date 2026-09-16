@@ -27,6 +27,16 @@ services:
     networks:
       - control
 
+  modbus-probe:
+    image: python:3.12-alpine
+    profiles:
+      - verify
+    volumes:
+      - ../tools/modbus_probe.py:/probe.py:ro
+    command: ["python", "/probe.py", "--host", "openplc", "--port", "5020"]
+    networks:
+      - control
+
 networks:
   control:
 
