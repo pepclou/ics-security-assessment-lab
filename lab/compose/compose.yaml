@@ -45,6 +45,21 @@ services:
     networks:
       - control
 
+  modbus-capture:
+    image: nicolaka/netshoot:v0.16
+    profiles:
+      - capture
+    network_mode: "service:openplc"
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_RAW
+    volumes:
+      - ../../evidence/baseline:/capture
+    command: ["tcpdump", "-i", "eth0", "-p", "-nn", "-s", "0", "-U", "-c", "80", "-w", "/capture/fuxa-openplc-baseline.pcap", "tcp", "port", "5020"]
+    depends_on:
+      - openplc
+
 networks:
   control:
 
