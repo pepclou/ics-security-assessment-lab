@@ -13,10 +13,11 @@
 | Editor 시뮬레이터·Docker Runtime 연결, PLC 업로드 | 사용자 실행 로그로 컴파일·업로드·시작 확인 | Runtime 이미지 digest와 지속 실행 상태는 미확인 |
 | Modbus TCP 서버 | 읽기 및 펌프 명령 쓰기·상태 변화 확인 | [`evidence/baseline/`](evidence/baseline/) |
 | FUXA Modbus 연결·태그 읽기 | 연결 표시와 4개 태그 값·갱신 시각 확인 | [`evidence/baseline/fuxa-tags-2026-09-17.md`](evidence/baseline/fuxa-tags-2026-09-17.md) |
-| FUXA 운전 화면·정상 패킷 | 미검증 | 화면 조작과 패킷 관찰 진행 |
+| FUXA 운전 화면 | 수위·펌프 명령·상태와 80% 경보 동작을 사용자 관찰로 확인 | [`evidence/baseline/fuxa-mainview-2026-09-18.md`](evidence/baseline/fuxa-mainview-2026-09-18.md), [`경보 관찰`](evidence/baseline/fuxa-high-level-alarm-2026-09-18.md) |
+| 정상 패킷 | 미검증 | FUXA↔PLC 요청·응답 캡처 진행 |
 | 보안 평가·개선·재검증 | 미실시 | 정상 기준 확보 후 진행 |
 
-**현재 성과를 취약점 발견이나 조치 성공으로 주장하지 않습니다.** Modbus 읽기·쓰기, 짧은 공정 상태 변화, FUXA의 태그 값 표시는 확인했지만, 정상 패킷과 보안 통제는 아직 검증하지 않았습니다.
+**현재 성과를 취약점 발견이나 조치 성공으로 주장하지 않습니다.** Modbus 읽기·쓰기, 짧은 공정 상태 변화, FUXA의 태그 값과 수동 운전 화면 반응은 확인했지만, 정상 패킷과 보안 통제는 아직 검증하지 않았습니다.
 
 ## 컨설팅 관점의 평가 질문
 
@@ -43,6 +44,6 @@
 
 ## 다음 완료 기준
 
-FUXA 운전 화면과 정상 패킷을 baseline으로 확보하고, 이후 접근 경계 평가·개선·재검증을 진행합니다.
+FUXA↔PLC 정상 패킷과 재시작 후 복원을 baseline으로 확보하고, 이후 접근 경계 평가·개선·재검증을 진행합니다.
 
 Runtime과 FUXA의 `latest` 태그는 아직 정확한 이미지 digest로 고정하지 않았습니다. 재현 절차와 최종 결과는 실측 버전·증거를 확보한 뒤 갱신합니다.
