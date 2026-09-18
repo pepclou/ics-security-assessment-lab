@@ -14,10 +14,10 @@
 | Modbus TCP 서버 | 읽기 및 펌프 명령 쓰기·상태 변화 확인 | [`evidence/baseline/`](evidence/baseline/) |
 | FUXA Modbus 연결·태그 읽기 | 연결 표시와 4개 태그 값·갱신 시각 확인 | [`evidence/baseline/fuxa-tags-2026-09-17.md`](evidence/baseline/fuxa-tags-2026-09-17.md) |
 | FUXA 운전 화면 | 수위·펌프 명령·상태와 80% 경보 동작을 사용자 관찰로 확인 | [`evidence/baseline/fuxa-mainview-2026-09-18.md`](evidence/baseline/fuxa-mainview-2026-09-18.md), [`경보 관찰`](evidence/baseline/fuxa-high-level-alarm-2026-09-18.md) |
-| 정상 패킷 | 정지 상태의 Modbus 읽기 요청·응답 27쌍 확인 | [`패킷 분석`](evidence/baseline/fuxa-openplc-pcap-2026-09-18.md) |
+| 정상 패킷 | 정지 상태 읽기 27쌍 및 운전 중 ON·OFF 쓰기와 수위·상태 변화 확인 | [`정지 상태`](evidence/baseline/fuxa-openplc-pcap-2026-09-18.md), [`운전 중`](evidence/baseline/fuxa-openplc-operation-2026-09-18.md) |
 | 보안 평가·개선·재검증 | 미실시 | 정상 기준 확보 후 진행 |
 
-**현재 성과를 취약점 발견이나 조치 성공으로 주장하지 않습니다.** Modbus 읽기·쓰기, 짧은 공정 상태 변화, FUXA의 태그 값과 수동 운전 화면 반응, 정지 상태의 정상 읽기 패킷을 확인했습니다. 운전 중 패킷과 보안 통제는 아직 검증하지 않았습니다.
+**현재 성과를 취약점 발견이나 조치 성공으로 주장하지 않습니다.** Modbus 읽기·쓰기, 짧은 공정 상태 변화, FUXA의 태그 값과 수동 운전 화면 반응, 정지 및 운전 중 패킷을 확인했습니다. 보안 통제는 아직 검증하지 않았습니다.
 
 ## 컨설팅 관점의 평가 질문
 
@@ -45,6 +45,6 @@
 
 ## 다음 완료 기준
 
-운전 중 패킷과 재시작 후 복원을 baseline으로 확보하고, 이후 접근 경계 평가·개선·재검증을 진행합니다.
+재시작 후 복원을 baseline으로 확보하고, 이후 접근 경계 평가·개선·재검증을 진행합니다.
 
 Runtime과 FUXA의 `latest` 태그는 아직 정확한 이미지 digest로 고정하지 않았습니다. 재현 절차와 최종 결과는 실측 버전·증거를 확보한 뒤 갱신합니다.
