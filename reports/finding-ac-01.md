@@ -2,7 +2,7 @@
 
 ## Summary
 
-Any container attached to the current shared Docker `control` network can reach the OpenPLC Modbus service and issue a pump command without a FUXA or PLC application credential. A controlled assessment container reproduced the condition and changed the modeled process state.
+The tested assessment container, when attached to the shared Docker `control` network, reached OpenPLC and issued a pump command without a FUXA or PLC application credential. A controlled assessment container reproduced the condition and changed the modeled process state.
 
 ## Rating
 
@@ -18,11 +18,11 @@ The assessment container read an initial OFF state, wrote the command ON, observ
 
 ## Root cause
 
-OpenPLC, FUXA, and the assessment services share one Docker bridge network. Reachability to TCP 5020 is effectively the authorization boundary. The current Modbus endpoint accepts the tested read and write function codes from any client that can reach it.
+In the before-state, OpenPLC, FUXA, and the assessment services shared one Docker bridge network. Reachability to TCP 5020 is effectively the authorization boundary. The current Modbus endpoint accepts the tested read and write function codes from any client that can reach it.
 
 ## Recommendation
 
-Place OpenPLC and FUXA on a dedicated internal control network and remove general assessment workloads from that network. Give the evaluator a separate network with no route or shared attachment to OpenPLC. Keep TCP 5020 unpublished on the host. This network control should allow FUXA polling and commands while preventing the same assessment container from reaching the PLC.
+Keep OpenPLC and FUXA on the dedicated control network and remove general assessment workloads from that network. The implemented internal flag applies only to assessment; restricting control-network egress is a separate, unapplied recommendation requiring dependency review. Give the evaluator a separate network with no route or shared attachment to OpenPLC. Keep TCP 5020 unpublished on the host. This network control should allow FUXA polling and commands while preventing the same assessment container from reaching the PLC.
 
 Treat FUXA as a trusted Modbus client: segmentation does not prevent misuse if the FUXA backend is compromised. Where the product and operational design support it, add protocol-aware enforcement or authenticated secure transport as a separate defense.
 
@@ -37,6 +37,6 @@ Treat FUXA as a trusted Modbus client: segmentation does not prevent misuse if t
 
 The evaluator services were moved to a separate internal Docker network. The same `modbus-pump-check` service then failed during its baseline read with name-resolution error `[Errno -3] Try again`, before a Modbus request or write could be issued. OpenPLC and FUXA were not recreated for the change.
 
-The operator subsequently used FUXA to perform an ON/OFF sequence and supplied a post-test screen showing the command OFF and level at 12%. This supports that the allowed HMI path and modeled process remained operational while the evaluator path was removed. See the [retest evidence](../evidence/retest/ac-01-network-separation-2026-09-19.md).
+The operator subsequently used FUXA to perform an ON/OFF sequence and supplied a post-test screen showing the command OFF and level at 12%. This records the operator observation and final displayed state; a still image does not independently prove live updates or the ON transition. See the [retest evidence](../evidence/retest/ac-01-network-separation-2026-09-19.md).
 
-Status: **Mitigated and retested — evaluator path blocked; allowed HMI operation maintained.** Residual risk remains for clients intentionally attached to the trusted control network and for compromise of FUXA itself.
+Status: **Segmentation configured; retest partial.** DNS failure is confirmed. Direct-IP isolation and packet-supported allowed-path regression remain unverified. See the [test matrix](../docs/test-matrix.md) and [retest runbook](../docs/retest-runbook.md). Residual risk remains for clients intentionally attached to the trusted control network and for compromise of FUXA itself.

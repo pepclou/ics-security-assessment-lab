@@ -1,0 +1,35 @@
+# Additive overlay. Existing evaluator services stay on assessment.
+# Invoke explicitly with both -f arguments. No service joins both networks.
+services:
+  baseline-probe:
+    image: python:3.12-alpine
+    profiles: [verify]
+    volumes: ["../tools:/tools:ro"]
+    command: ["python", "/tools/modbus_probe.py"]
+    networks: [control]
+  baseline-pump-check:
+    image: python:3.12-alpine
+    profiles: [verify]
+    volumes: ["../tools:/tools:ro"]
+    command: ["python", "/tools/modbus_pump_check.py"]
+    networks: [control]
+  isolated-tcp-check:
+    image: python:3.12-alpine
+    profiles: [verify]
+    volumes: ["../tools:/tools:ro"]
+    command: ["python", "/tools/tcp_boundary_check.py", "--host", "openplc"]
+    networks: [assessment]
+  trusted-tcp-check:
+    image: python:3.12-alpine
+    profiles: [verify]
+    volumes: ["../tools:/tools:ro"]
+    command: ["python", "/tools/tcp_boundary_check.py", "--host", "openplc"]
+    networks: [control]
+  retest-capture:
+    image: nicolaka/netshoot:v0.16
+    profiles: [capture]
+    network_mode: "service:openplc"
+    cap_drop: [ALL]
+    cap_add: [NET_RAW]
+    volumes: ["../../evidence/retest:/capture"]
+    command: ["tcpdump", "-i", "eth0", "-p", "-nn", "-s", "0", "-U", "-c", "600", "-w", "/capture/replace-with-unique-run-id.pcap", "tcp", "port", "5020"]

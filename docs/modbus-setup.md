@@ -1,52 +1,22 @@
 # Modbus TCP server setup and verification
 
-Status: PLC build/upload, read-only Modbus TCP probe, and brief pump command write/process response check succeeded on 2026-09-17. Alarm and restart behavior remain unverified.
+Status: historical setup findings are retained below. For current stage-specific commands and recovery, use [the retest runbook](retest-runbook.md). Alarm and FUXA restart observations were added later; see the final report.
 
 ## Configuration
 
 Create the Modbus TCP server in OpenPLC Editor v4: use the project tree `+` menu, choose **Server → Modbus / TCP**, and enable it. Set the network interface to `0.0.0.0` and port to `5020`. Confirm the buffer mapping includes at least `%QX` bits 0–2 and `%QW` register 0. Save the project and use **Build & Upload** again. The Editor-generated `conf/modbus_slave.json` is what enables the plugin during upload.
 
-The earlier Compose version mounted `plugins.conf` and `modbus_slave_config.json` read-only. This conflicted with the Runtime's upload process: the 2026-09-17 log said `Disabled plugin 'modbus_slave' (no config file found)` and `Failed to save updated plugin configuration`. Those mounts have been removed. Recreate the OpenPLC container with the revised Compose file before uploading again. The container recreation can remove its current compiled PLC program, so re-upload and run it afterward.
+The earlier Compose version mounted `plugins.conf` and `modbus_slave_config.json` read-only. This conflicted with the Runtime's upload process: the 2026-09-17 log said `Disabled plugin 'modbus_slave' (no config file found)` and `Failed to save updated plugin configuration`. Those mounts were removed as a historical deployment correction. Container recreation and re-upload belong only to that deployment repair, not routine verification of the current running lab.
 
-Port 5020 is not published to the host; FUXA and the read-only probe can use `openplc:5020` on the Compose `control` network. The Editor still uses host `127.0.0.1:8443`.
+Port 5020 is not published to the host; FUXA and the explicit trusted baseline probe can use `openplc:5020` on control; base evaluator services are isolated on assessment. The Editor still uses host `127.0.0.1:8443`.
 
 The port differs from the initial architecture's tentative port 502. Both endpoints must use 5020 during this verification. The project should pin the working Runtime image digest after the actual image is checked.
 
-## Verification on the Docker host
+## Current verification and recovery
 
-Run these commands from the repository root in PowerShell:
+Use [the retest runbook](retest-runbook.md). The base Compose intentionally isolates `modbus-probe` and `modbus-pump-check`; those services cannot serve as a normal-path probe or recovery tool. The additive `compose.verify.yaml` supplies explicit, temporary `baseline-*` services on control. It does not move the isolated evaluator back to control.
 
-```powershell
-docker compose -f lab/compose/compose.yaml config
-docker compose -f lab/compose/compose.yaml up -d --force-recreate openplc
-docker compose -f lab/compose/compose.yaml ps
-docker compose -f lab/compose/compose.yaml logs --tail=150 openplc
-docker compose -f lab/compose/compose.yaml images
-```
-
-After recreating the container, create the server in the Editor, then Build & Upload and start `tank_control`. Confirm the Runtime loaded `modbus_slave` and listens on port 5020. Check that the PLC program is running before interpreting zero or unchanging Modbus values.
-
-Then run the read-only probe from the same Compose network:
-
-```powershell
-docker compose -f lab/compose/compose.yaml run --rm modbus-probe
-```
-
-The probe reads holding register offset 0 with function code 03 and coil offsets 0–2 with function code 01. It prints the returned values as JSON or exits with an error. It does not write a coil or change the PLC state. This one-time verification service runs only when explicitly targeted; it is not started by ordinary `docker compose up`.
-
-To check the pump command and process response in this isolated lab, run the separate one-time service:
-
-```powershell
-docker compose -f lab/compose/compose.yaml run --rm modbus-pump-check
-```
-
-It reads the baseline, skips the test if the pump command is already on or the high-level alarm is active, writes coil 0 on, waits three seconds, reads the tags, and writes coil 0 off in a `finally` block. Its JSON result reports each read and five checks. If the process is interrupted or the JSON reports `reset_error`, explicitly turn the command off and verify it:
-
-```powershell
-docker compose -f lab/compose/compose.yaml run --rm modbus-pump-check python /tools/modbus_pump_check.py --reset
-```
-
-The write test is not started by ordinary `docker compose up`. Run it only in the project-owned lab, not against an external PLC.
+Do not force-recreate a running PLC as a routine verification step. Re-upload is a separate deployment operation. `finally` attempts OFF; process termination or network loss can prevent restoration. Use the trusted recovery path in the runbook and verify both command and running state.
 
 ## Tag contract to validate
 
