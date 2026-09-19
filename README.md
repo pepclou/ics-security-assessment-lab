@@ -17,9 +17,9 @@
 | 정상 패킷 | 정지 상태 읽기 27쌍 및 운전 중 ON·OFF 쓰기와 수위·상태 변화 확인 | [`정지 상태`](evidence/baseline/fuxa-openplc-pcap-2026-09-18.md), [`운전 중`](evidence/baseline/fuxa-openplc-operation-2026-09-18.md) |
 | FUXA 재시작 복원 | 컨테이너 재시작 후 저장 화면·태그 표시·제어 동작 복원을 사용자 확인 | [`재시작 관찰`](evidence/baseline/fuxa-restart-recovery-2026-09-19.md) |
 | 접근 경계 평가 | 별도 평가 컨테이너의 인증 없는 읽기·쓰기와 공정 상태 변화 확인 | [`AC-02 증거`](evidence/assessment/ac-02-unauthenticated-write-2026-09-19.md), [`Finding AC-01`](reports/finding-ac-01.md) |
-| 개선·재검증 | 미실시 | 평가자 경로 분리 후 차단과 정상 HMI 동작을 함께 확인 예정 |
+| 개선·재검증 | 평가 도구를 별도 내부망으로 분리하고 PLC 접근 차단·FUXA 정상 운영 유지 확인 | [`재검증 증거`](evidence/retest/ac-01-network-separation-2026-09-19.md), [`Finding AC-01`](reports/finding-ac-01.md) |
 
-**현재 성과는 소유한 Docker 실습 환경에 한정됩니다.** 정상 Modbus 통신과 HMI 동작을 기준선으로 확보하고, 같은 제어망의 별도 평가 컨테이너가 인증 없이 운전 명령을 변경할 수 있음을 확인했습니다. 개선과 재검증은 아직 수행하지 않았습니다.
+**현재 성과는 소유한 Docker 실습 환경에 한정됩니다.** 정상 Modbus 통신과 HMI 동작을 기준선으로 확보하고, 같은 제어망의 별도 평가 컨테이너가 인증 없이 운전 명령을 변경할 수 있음을 확인했습니다. 평가 도구를 별도 내부망으로 분리한 뒤 동일 경로의 차단과 FUXA 정상 운영 유지를 재검증했습니다.
 
 ## 컨설팅 관점의 평가 질문
 

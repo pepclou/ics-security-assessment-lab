@@ -33,4 +33,10 @@ Treat FUXA as a trusted Modbus client: segmentation does not prevent misuse if t
 3. FUXA continues polling and can perform the baseline ON/OFF sequence.
 4. The command is OFF and the pump is stopped after testing.
 
-Status: **Open — remediation and retest not yet performed.**
+## Retest result
+
+The evaluator services were moved to a separate internal Docker network. The same `modbus-pump-check` service then failed during its baseline read with name-resolution error `[Errno -3] Try again`, before a Modbus request or write could be issued. OpenPLC and FUXA were not recreated for the change.
+
+The operator subsequently used FUXA to perform an ON/OFF sequence and supplied a post-test screen showing the command OFF and level at 12%. This supports that the allowed HMI path and modeled process remained operational while the evaluator path was removed. See the [retest evidence](../evidence/retest/ac-01-network-separation-2026-09-19.md).
+
+Status: **Mitigated and retested — evaluator path blocked; allowed HMI operation maintained.** Residual risk remains for clients intentionally attached to the trusted control network and for compromise of FUXA itself.

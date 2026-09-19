@@ -33,7 +33,7 @@ services:
       - ../tools/modbus_probe.py:/probe.py:ro
     command: ["python", "/probe.py", "--host", "openplc", "--port", "5020"]
     networks:
-      - control
+      - assessment
 
   modbus-pump-check:
     image: python:3.12-alpine
@@ -43,7 +43,7 @@ services:
       - ../tools:/tools:ro
     command: ["python", "/tools/modbus_pump_check.py"]
     networks:
-      - control
+      - assessment
 
   modbus-capture:
     image: nicolaka/netshoot:v0.16
@@ -77,6 +77,8 @@ services:
 
 networks:
   control:
+  assessment:
+    internal: true
 
 volumes:
   openplc_data:
