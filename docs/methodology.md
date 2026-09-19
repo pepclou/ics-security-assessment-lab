@@ -1,5 +1,7 @@
 # 진단 방법론 v0.1
 
+> 이 문서는 실행 전에 정한 방법과 중단 조건을 보존한 기록이다. 수행 결과와 체크리스트 판정은 [최종 기술 보고서](../reports/final-report.md), [평가 증거](../evidence/assessment/ac-02-unauthenticated-write-2026-09-19.md), [재검증 증거](../evidence/retest/ac-01-network-separation-2026-09-19.md)를 기준으로 한다.
+
 프로젝트: ICS Security Assessment Lab — Modbus TCP Security Assessment & Remediation
 
 이 문서는 Day 1에 방법을 정의했다. 이후 Editor 시뮬레이터 실행과 Docker Runtime 연결은 사용자에게서 성공을 확인했으나, 버전·로그·화면 증거는 아직 저장소에 없다. 아래 진단 항목은 수행 결과가 아니다.

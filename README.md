@@ -41,12 +41,15 @@
 | [`docs/pc-transfer.md`](docs/pc-transfer.md) | 다른 PC로 옮길 때의 저장소·Docker 데이터 인계 |
 | [`docs/fuxa-setup.md`](docs/fuxa-setup.md) | FUXA 연결·태그 주소·복원 절차 |
 | [`docs/packet-capture.md`](docs/packet-capture.md) | FUXA↔PLC 정상 Modbus 패킷 캡처 절차 |
+| [`docs/network-remediation.md`](docs/network-remediation.md) | 평가자 네트워크 분리와 재검증 절차 |
+| [`reports/final-report.md`](reports/final-report.md) | 범위부터 재검증까지 연결한 최종 기술 보고서 |
+| [`reports/portfolio-summary.md`](reports/portfolio-summary.md) | 지원서·면접용 프로젝트 요약과 설명 포인트 |
 | [`lab/compose/compose.yaml`](lab/compose/compose.yaml) | OpenPLC·FUXA 컨테이너 설정 |
 | [`lab/plc/tank_control/`](lab/plc/tank_control/) | 제어 프로그램 원본 |
 | [`evidence/`](evidence/) | 정상 기준, 평가, 개선, 재검증 증거를 저장할 위치 |
 
 ## 다음 완료 기준
 
-현재 정상 baseline을 바탕으로 접근 경계 평가·개선·재검증을 진행합니다. HMI 상태 표시의 명칭도 추가해 운전자가 두 LED를 구분할 수 있게 개선할 예정입니다.
+핵심 평가 흐름은 완료했습니다. 후속 품질 작업은 Runtime·FUXA 이미지 digest 고정, HMI LED 명칭 추가, 재현 절차의 새 PC 검증입니다.
 
 Runtime과 FUXA의 `latest` 태그는 아직 정확한 이미지 digest로 고정하지 않았습니다. 재현 절차와 최종 결과는 실측 버전·증거를 확보한 뒤 갱신합니다.

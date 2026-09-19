@@ -1,5 +1,7 @@
 # ICS Security Assessment Lab — Modbus TCP Security Assessment & Remediation
 
+> 이 문서는 2026-09-14에 작성한 초기 계획과 선택 근거를 보존한 기록이다. 실제 수행 결과와 현재 판정은 [최종 기술 보고서](../reports/final-report.md)를 기준으로 한다.
+
 ## 문서 상태
 
 Architecture v0.1 / Day 1 설계 / 조사일: 2026-09-14 (Asia/Seoul).

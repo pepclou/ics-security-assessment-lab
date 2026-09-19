@@ -1,5 +1,7 @@
 # Architecture v0.1
 
+> 이 문서는 Day 1의 초기 설계를 보존한 기록이다. 구현 후 네트워크와 검증 결과는 [최종 기술 보고서](../reports/final-report.md)와 [현재 Compose 설정](../lab/compose/compose.yaml)을 기준으로 한다.
+
 프로젝트: ICS Security Assessment Lab — Modbus TCP Security Assessment & Remediation
 
 상태: 2026-09-14 Day 1 설계. 아래 포트·태그·주기는 설계값이며 동작 확인 결과가 아니다.
