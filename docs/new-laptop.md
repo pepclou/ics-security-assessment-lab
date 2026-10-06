@@ -32,6 +32,14 @@ docker compose -f lab/compose/compose.yaml up -d openplc fuxa
 
 [재검증 실행서](retest-runbook.md)를 순서대로 수행한다. 새 overlay는 Docker에서 실행 검증 전이므로 첫 config 검증이 실패하면 중단하고 오류를 기록한다.
 
+환경 식별과 TCP 경계 대조는 다음 명령으로 자동 수집할 수 있다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File lab/tools/invoke-retest.ps1
+```
+
+이 명령은 PLC/HMI가 실행되고 정상 HMI 통신이 확인된 뒤 사용한다. HMI ON/OFF와 PCAP 수집은 화면 조작이 필요하므로 자동화 범위에 포함되지 않는다.
+
 1. 실행 버전·컨테이너 IP·이미지 ID 수집.
 2. 신뢰 경로 읽기, 명령 OFF·경보 OFF·수위 0 확인.
 3. control의 임시 도구로 제한된 쓰기와 OFF 복원 확인.

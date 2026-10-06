@@ -8,6 +8,14 @@
 
 저장소 루트의 PowerShell에서 실행한다. `docker`가 PATH에 없다면 실제 Docker CLI 경로를 사용한다.
 
+환경 식별과 신뢰·비신뢰 TCP 경로 대조는 아래 명령으로 한 번에 수집할 수 있다. 기존 실행 폴더와 같은 Run ID는 거부하며, 중간 명령이 예상과 다른 종료 코드를 반환하면 즉시 중단한다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File lab/tools/invoke-retest.ps1
+```
+
+성공 시 `evidence/retest/<Run ID>/`에 환경 정보, 직접 IP 대조 결과, 판정 JSON과 SHA-256 목록이 생성된다. 이 자동화는 아래 1~3단계를 대신할 수 있지만, 출력 내용을 검토하지 않고 PASS로 옮겨 적지 않는다. HMI 조작과 PCAP 확보는 4단계를 별도로 수행한다.
+
 ```powershell
 $composeArgs = @('-f', 'lab/compose/compose.yaml', '-f', 'lab/compose/compose.verify.yaml')
 $runId = Get-Date -Format 'yyyyMMdd-HHmmss'
@@ -101,3 +109,15 @@ Get-ChildItem -LiteralPath $runDir -File | Get-FileHash -Algorithm SHA256 | Sele
 
 PCAP은 별도 retest 루트에 생성되므로 해당 파일 해시도 기록한다. 시험자, 시간대, 정확한 명령, 출발/대상, 기대·실제 결과, 종료 상태를 [시험 결과표](test-matrix.md)에 연결한다.
 원본에 민감정보가 있으면 공개용 사본과 그 해시를 분리한다. 과거 실행 결과를 새 시험 결과로 바꾸지 않는다.
+
+## 6. Finding 종결 조건
+
+다음 조건을 모두 충족한 경우에만 AC-01을 `조치 및 재검증 완료`로 바꾼다.
+
+1. 같은 실행 시점에 격리된 client의 PLC 실제 IP 연결은 실패하고 신뢰된 client 연결은 성공한다.
+2. 실행 네트워크와 PLC IP를 컨테이너 정보로 확인한다.
+3. 조치 후 HMI의 FC05 ON/OFF, FC01 상태, FC03 수위 변화를 새 PCAP에서 확인한다.
+4. 시험 종료 시 명령과 운전 상태가 OFF임을 신뢰 경로 읽기로 확인한다.
+5. 환경 식별값, 원본 파일, SHA-256, 시험자와 시각을 시험표에 연결한다.
+
+하나라도 빠지면 `부분 완료`를 유지한다. TCP 차단은 네트워크 경계의 도달성만 입증하며, Modbus 인증·암호화 또는 FUXA 침해 대응까지 해결했다는 의미는 아니다.

@@ -13,6 +13,8 @@ OpenPLC·FUXA 가상 탱크에서 정상 통신과 비인가 역할의 운전 �
 5. [현재 실행 및 복원 절차](docs/retest-runbook.md)
 6. [시험 환경 식별표](docs/environment-record.md)
 
+다른 노트북에서는 [이전 절차](docs/new-laptop.md)로 환경을 복원한 뒤 `lab/tools/invoke-retest.ps1`로 환경 정보와 TCP 경계 대조 증거를 수집한다. 실제 실행 전까지 자동화 파일의 존재를 시험 성공으로 간주하지 않는다.
+
 ## 핵심 증거
 
 - [정지 PCAP 분석](evidence/baseline/fuxa-openplc-pcap-2026-09-18.md): 요청·응답 27쌍
