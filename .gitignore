@@ -2,3 +2,4 @@
 lab/plc/**/build/
 __pycache__/
 *.pyc
+.portfolio-build/

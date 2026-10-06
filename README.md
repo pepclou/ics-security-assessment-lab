@@ -6,12 +6,14 @@ OpenPLC·FUXA 가상 탱크에서 정상 통신과 비인가 역할의 운전 �
 
 ## 먼저 볼 문서
 
-1. [지원용 요약](reports/portfolio-summary.md)
-2. [기술 보고서](reports/final-report.md)
-3. [Finding AC-01](reports/finding-ac-01.md)
-4. [시험 결과·증거 추적표](docs/test-matrix.md)
-5. [현재 실행 및 복원 절차](docs/retest-runbook.md)
-6. [시험 환경 식별표](docs/environment-record.md)
+1. [제출용 포트폴리오 PDF](reports/portfolio/inderforest-ot-security-portfolio-final.pdf)
+2. [편집 가능한 포트폴리오 PPTX](reports/portfolio/inderforest-ot-security-portfolio-final.pptx)
+3. [지원용 요약](reports/portfolio-summary.md)
+4. [기술 보고서](reports/final-report.md)
+5. [Finding AC-01](reports/finding-ac-01.md)
+6. [시험 결과·증거 추적표](docs/test-matrix.md)
+7. [현재 실행 및 복원 절차](docs/retest-runbook.md)
+8. [시험 환경 식별표](docs/environment-record.md)
 
 다른 노트북에서는 [이전 절차](docs/new-laptop.md)로 환경을 복원한 뒤 `lab/tools/invoke-retest.ps1`로 환경 정보와 TCP 경계 대조 증거를 수집한다. 실제 실행 전까지 자동화 파일의 존재를 시험 성공으로 간주하지 않는다.
 

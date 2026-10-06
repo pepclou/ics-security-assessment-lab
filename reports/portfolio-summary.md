@@ -1,6 +1,8 @@
 # 인더포레스트 지원용 — Modbus TCP 접근통제 진단
 
-상태: 기술 검토 반영 초안. IP 직접 차단·조치 후 패킷 재검증은 미완료.
+상태: 제출용 요약. IP 직접 차단·조치 후 패킷 재검증은 미완료이며 결과 범위에서 제외한다.
+
+[제출용 PDF](portfolio/inderforest-ot-security-portfolio-final.pdf) · [편집용 PPTX](portfolio/inderforest-ot-security-portfolio-final.pptx)
 
 ## 프로젝트와 지원 직무
 
